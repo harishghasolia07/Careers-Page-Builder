@@ -16,7 +16,7 @@ import { Card } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
 import { SectionEditor } from '@/components/editor/SectionEditor';
 import { RoleGuard } from '@/components/auth/RoleGuard';
-import { ArrowLeft, Save, Eye, Copy, Check } from 'lucide-react';
+import { ArrowLeft, Save, Eye, Copy, Check, Loader2 } from 'lucide-react';
 import { Company, Section, SectionType } from '@/lib/types';
 import { toast } from 'sonner';
 import Link from 'next/link';
@@ -48,6 +48,7 @@ export default function EditorPage({ params }: { params: Promise<{ slug: string 
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [navigating, setNavigating] = useState<'dashboard' | 'preview' | null>(null);
 
   const [name, setName] = useState('');
   const [logoUrl, setLogoUrl] = useState('');
@@ -185,10 +186,19 @@ export default function EditorPage({ params }: { params: Promise<{ slug: string 
       <header className="bg-white border-b sticky top-0 z-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
           <div className="flex items-center gap-4">
-            <Link href="/dashboard">
-              <Button variant="ghost" size="sm">
-                <ArrowLeft className="h-4 w-4 mr-2" />
-                Dashboard
+            <Link href="/dashboard" onClick={() => setNavigating('dashboard')}>
+              <Button variant="ghost" size="sm" disabled={navigating === 'dashboard'}>
+                {navigating === 'dashboard' ? (
+                  <>
+                    <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                    Loading...
+                  </>
+                ) : (
+                  <>
+                    <ArrowLeft className="h-4 w-4 mr-2" />
+                    Dashboard
+                  </>
+                )}
               </Button>
             </Link>
             <div className="h-6 w-px bg-slate-200" />
@@ -198,15 +208,33 @@ export default function EditorPage({ params }: { params: Promise<{ slug: string 
             </div>
           </div>
           <div className="flex items-center gap-3">
-            <Link href={`/${slug}/preview`}>
-              <Button variant="outline" size="sm">
-                <Eye className="h-4 w-4 mr-2" />
-                Preview
+            <Link href={`/${slug}/preview`} onClick={() => setNavigating('preview')}>
+              <Button variant="outline" size="sm" disabled={navigating === 'preview'}>
+                {navigating === 'preview' ? (
+                  <>
+                    <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                    Loading...
+                  </>
+                ) : (
+                  <>
+                    <Eye className="h-4 w-4 mr-2" />
+                    Preview
+                  </>
+                )}
               </Button>
             </Link>
             <Button onClick={handleSave} disabled={saving} size="sm">
-              <Save className="h-4 w-4 mr-2" />
-              {saving ? 'Saving...' : 'Save Changes'}
+              {saving ? (
+                <>
+                  <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                  Saving...
+                </>
+              ) : (
+                <>
+                  <Save className="h-4 w-4 mr-2" />
+                  Save Changes
+                </>
+              )}
             </Button>
             <UserButton />
           </div>

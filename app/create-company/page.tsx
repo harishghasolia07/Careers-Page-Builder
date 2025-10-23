@@ -14,6 +14,7 @@ export default function CreateCompanyPage() {
   const router = useRouter();
   const { user, isLoaded } = useUser();
   const [loading, setLoading] = useState(false);
+  const [skipping, setSkipping] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
     slug: '',
@@ -100,6 +101,7 @@ export default function CreateCompanyPage() {
   };
 
   const handleSkip = () => {
+    setSkipping(true);
     router.push('/dashboard');
   };
 
@@ -177,10 +179,17 @@ export default function CreateCompanyPage() {
                 type="button"
                 variant="outline"
                 onClick={handleSkip}
-                disabled={loading}
+                disabled={loading || skipping}
                 className="flex-1"
               >
-                Skip for Now
+                {skipping ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Loading...
+                  </>
+                ) : (
+                  'Skip for Now'
+                )}
               </Button>
               <Button
                 type="submit"

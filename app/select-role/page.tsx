@@ -13,6 +13,7 @@ export default function SelectRolePage() {
   const router = useRouter();
   const { isSignedIn, isLoaded, user } = useUser();
   const [selectedRole, setSelectedRole] = useState<UserRole | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   // If already signed in, redirect to appropriate page
   useEffect(() => {
@@ -82,14 +83,18 @@ export default function SelectRolePage() {
   ];
 
   const handleContinue = () => {
+    if (isLoading) return; // prevent double clicks
+
     if (selectedRole) {
+      setIsLoading(true);
       // Store the selected role in session storage to use after sign-up
       try {
-        sessionStorage.setItem('selectedRole', selectedRole);
+        sessionStorage.setItem('selectedRole', String(selectedRole));
       } catch (error) {
         // Handle sessionStorage errors silently
       }
-      
+
+      // Kick off navigation. The loading state will remain until the router navigates away.
       router.push('/sign-up');
     }
   };
@@ -160,10 +165,18 @@ export default function SelectRolePage() {
           <Button
             size="lg"
             onClick={handleContinue}
-            disabled={!selectedRole}
-            className={`min-w-[200px] ${!selectedRole ? 'opacity-50 cursor-not-allowed' : ''}`}
+            disabled={!selectedRole || isLoading}
+            aria-busy={isLoading}
+            className={`min-w-[200px] flex items-center justify-center gap-2 ${!selectedRole || isLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
           >
-            Continue as {selectedRole ? roles.find(r => r.value === selectedRole)?.title : '...'}
+            {isLoading ? (
+              <>
+                <Loader2 className="h-5 w-5 animate-spin" />
+                <span>Continuing...</span>
+              </>
+            ) : (
+              `Continue as ${selectedRole ? roles.find(r => r.value === selectedRole)?.title : '...'}`
+            )}
           </Button>
         </div>
 

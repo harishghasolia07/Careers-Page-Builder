@@ -8,7 +8,7 @@ import Link from 'next/link';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
-import { Building2, ExternalLink, Pencil, Plus, Briefcase } from 'lucide-react';
+import { Building2, ExternalLink, Pencil, Plus, Briefcase, Loader2 } from 'lucide-react';
 import { Company } from '@/lib/types';
 
 export default function DashboardPage() {
@@ -16,6 +16,7 @@ export default function DashboardPage() {
   const router = useRouter();
   const [companies, setCompanies] = useState<Company[]>([]);
   const [loading, setLoading] = useState(true);
+  const [loadingButtons, setLoadingButtons] = useState<{ [key: string]: string }>({});
 
   const userRole = user?.unsafeMetadata?.role as string;
   const isRecruiter = userRole === 'recruiter';
@@ -62,6 +63,14 @@ export default function DashboardPage() {
   if (isLoaded && isCandidate) {
     return null;
   }
+
+  const handleButtonClick = (companyId: string, action: string) => {
+    setLoadingButtons(prev => ({ ...prev, [companyId]: action }));
+  };
+
+  const isButtonLoading = (companyId: string, action: string) => {
+    return loadingButtons[companyId] === action;
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-50">
@@ -154,22 +163,60 @@ export default function DashboardPage() {
                   <CardDescription>/{company.slug}/careers</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-3">
-                  <Link href={`/${company.slug}/edit`} className="block">
-                    <Button className="w-full h-11 text-sm font-medium" variant="default">
-                      <Pencil className="h-4 w-4 mr-2" />
-                      Edit Careers Page
+                  <Link href={`/${company.slug}/edit`} className="block" onClick={() => handleButtonClick(company.id, 'edit')}>
+                    <Button 
+                      className="w-full h-11 text-sm font-medium" 
+                      variant="default"
+                      disabled={isButtonLoading(company.id, 'edit')}
+                    >
+                      {isButtonLoading(company.id, 'edit') ? (
+                        <>
+                          <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                          Loading...
+                        </>
+                      ) : (
+                        <>
+                          <Pencil className="h-4 w-4 mr-2" />
+                          Edit Careers Page
+                        </>
+                      )}
                     </Button>
                   </Link>
-                  <Link href={`/create-job?companyId=${company.id}`} className="block">
-                    <Button className="w-full h-11 text-sm font-medium bg-white hover:bg-slate-50 text-slate-900 border-2 border-slate-200 hover:border-slate-300">
-                      <Briefcase className="h-4 w-4 mr-2" />
-                      Create Job Post
+                  <Link href={`/create-job?companyId=${company.id}`} className="block" onClick={() => handleButtonClick(company.id, 'create-job')}>
+                    <Button 
+                      className="w-full h-11 text-sm font-medium bg-white hover:bg-slate-50 text-slate-900 border-2 border-slate-200 hover:border-slate-300"
+                      disabled={isButtonLoading(company.id, 'create-job')}
+                    >
+                      {isButtonLoading(company.id, 'create-job') ? (
+                        <>
+                          <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                          Loading...
+                        </>
+                      ) : (
+                        <>
+                          <Briefcase className="h-4 w-4 mr-2" />
+                          Create Job Post
+                        </>
+                      )}
                     </Button>
                   </Link>
-                  <Link href={`/${company.slug}/careers`} target="_blank" className="block">
-                    <Button className="w-full h-11 text-sm font-medium" variant="outline">
-                      <ExternalLink className="h-4 w-4 mr-2" />
-                      View Public Page
+                  <Link href={`/${company.slug}/careers`} target="_blank" className="block" onClick={() => handleButtonClick(company.id, 'view')}>
+                    <Button 
+                      className="w-full h-11 text-sm font-medium" 
+                      variant="outline"
+                      disabled={isButtonLoading(company.id, 'view')}
+                    >
+                      {isButtonLoading(company.id, 'view') ? (
+                        <>
+                          <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                          Loading...
+                        </>
+                      ) : (
+                        <>
+                          <ExternalLink className="h-4 w-4 mr-2" />
+                          View Public Page
+                        </>
+                      )}
                     </Button>
                   </Link>
                 </CardContent>

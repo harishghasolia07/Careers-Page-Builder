@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { use } from 'react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, Loader2 } from 'lucide-react';
 import { Company, Job } from '@/lib/types';
 import { JobCard } from '@/components/careers/JobCard';
 import { JobFilters } from '@/components/careers/JobFilters';
@@ -21,6 +21,7 @@ export default function PreviewPage({ params }: { params: Promise<{ slug: string
   const [search, setSearch] = useState('');
   const [locationFilter, setLocationFilter] = useState('all');
   const [jobTypeFilter, setJobTypeFilter] = useState('all');
+  const [navigating, setNavigating] = useState(false);
 
   useEffect(() => {
     async function fetchData() {
@@ -86,10 +87,19 @@ export default function PreviewPage({ params }: { params: Promise<{ slug: string
             <span className="font-semibold">Preview Mode</span>
             <span className="text-amber-100">This is how your careers page will look</span>
           </div>
-          <Link href={`/${slug}/edit`}>
-            <Button variant="secondary" size="sm">
-              <ArrowLeft className="h-4 w-4 mr-2" />
-              Back to Editor
+          <Link href={`/${slug}/edit`} onClick={() => setNavigating(true)}>
+            <Button variant="secondary" size="sm" disabled={navigating}>
+              {navigating ? (
+                <>
+                  <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                  Loading...
+                </>
+              ) : (
+                <>
+                  <ArrowLeft className="h-4 w-4 mr-2" />
+                  Back to Editor
+                </>
+              )}
             </Button>
           </Link>
         </div>
