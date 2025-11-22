@@ -9,6 +9,8 @@ export async function GET(
     const { slug } = await params;
     const company = await mongoDataService.getCompanyBySlug(slug);
 
+    console.log('Slug....', slug);
+    console.log('Company....', company);
     if (!company) {
       return NextResponse.json(
         { error: 'Company not found' },
@@ -16,6 +18,7 @@ export async function GET(
       );
     }
 
+    console.log('Response....', NextResponse.json(company));
     return NextResponse.json(company);
   } catch (error) {
     console.error('Error fetching company:', error);

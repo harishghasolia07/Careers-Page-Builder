@@ -91,10 +91,8 @@ export default function SelectRolePage() {
       try {
         sessionStorage.setItem('selectedRole', String(selectedRole));
       } catch (error) {
-        // Handle sessionStorage errors silently
+        console.error(error);
       }
-
-      // Kick off navigation. The loading state will remain until the router navigates away.
       router.push('/sign-up');
     }
   };

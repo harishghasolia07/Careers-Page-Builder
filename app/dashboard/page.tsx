@@ -16,7 +16,6 @@ export default function DashboardPage() {
   const router = useRouter();
   const [companies, setCompanies] = useState<Company[]>([]);
   const [loading, setLoading] = useState(true);
-  const [loadingButtons, setLoadingButtons] = useState<{ [key: string]: string }>({});
 
   const userRole = user?.unsafeMetadata?.role as string;
   const isRecruiter = userRole === 'recruiter';
@@ -48,7 +47,7 @@ export default function DashboardPage() {
           setCompanies(data);
         }
       } catch (error) {
-        // Error fetching companies
+        
       } finally {
         setLoading(false);
       }
@@ -64,13 +63,7 @@ export default function DashboardPage() {
     return null;
   }
 
-  const handleButtonClick = (companyId: string, action: string) => {
-    setLoadingButtons(prev => ({ ...prev, [companyId]: action }));
-  };
-
-  const isButtonLoading = (companyId: string, action: string) => {
-    return loadingButtons[companyId] === action;
-  };
+  // Navigation buttons now act instantly without temporary loading UI
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-50">
@@ -163,60 +156,30 @@ export default function DashboardPage() {
                   <CardDescription>/{company.slug}/careers</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-3">
-                  <Link href={`/${company.slug}/edit`} className="block" onClick={() => handleButtonClick(company.id, 'edit')}>
+                  <Link href={`/${company.slug}/edit`} className="block">
                     <Button 
                       className="w-full h-11 text-sm font-medium" 
                       variant="default"
-                      disabled={isButtonLoading(company.id, 'edit')}
                     >
-                      {isButtonLoading(company.id, 'edit') ? (
-                        <>
-                          <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                          Loading...
-                        </>
-                      ) : (
-                        <>
-                          <Pencil className="h-4 w-4 mr-2" />
-                          Edit Careers Page
-                        </>
-                      )}
+                      <Pencil className="h-4 w-4 mr-2" />
+                      Edit Careers Page
                     </Button>
                   </Link>
-                  <Link href={`/create-job?companyId=${company.id}`} className="block" onClick={() => handleButtonClick(company.id, 'create-job')}>
+                  <Link href={`/create-job?companyId=${company.id}`} className="block">
                     <Button 
                       className="w-full h-11 text-sm font-medium bg-white hover:bg-slate-50 text-slate-900 border-2 border-slate-200 hover:border-slate-300"
-                      disabled={isButtonLoading(company.id, 'create-job')}
                     >
-                      {isButtonLoading(company.id, 'create-job') ? (
-                        <>
-                          <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                          Loading...
-                        </>
-                      ) : (
-                        <>
-                          <Briefcase className="h-4 w-4 mr-2" />
-                          Create Job Post
-                        </>
-                      )}
+                      <Briefcase className="h-4 w-4 mr-2" />
+                      Create Job Post
                     </Button>
                   </Link>
-                  <Link href={`/${company.slug}/careers`} target="_blank" className="block" onClick={() => handleButtonClick(company.id, 'view')}>
+                  <Link href={`/${company.slug}/careers`} target="_blank" className="block">
                     <Button 
                       className="w-full h-11 text-sm font-medium" 
                       variant="outline"
-                      disabled={isButtonLoading(company.id, 'view')}
                     >
-                      {isButtonLoading(company.id, 'view') ? (
-                        <>
-                          <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                          Loading...
-                        </>
-                      ) : (
-                        <>
-                          <ExternalLink className="h-4 w-4 mr-2" />
-                          View Public Page
-                        </>
-                      )}
+                      <ExternalLink className="h-4 w-4 mr-2" />
+                      View Public Page
                     </Button>
                   </Link>
                 </CardContent>

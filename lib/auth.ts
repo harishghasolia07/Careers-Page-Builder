@@ -9,7 +9,6 @@ export async function getCurrentUser() {
   }
 
   // In Clerk, you can access user metadata
-  // We'll need to set this up in Clerk dashboard or programmatically
   const user = await auth();
   
   return {

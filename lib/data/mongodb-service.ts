@@ -1,4 +1,3 @@
-import { ObjectId } from 'mongodb';
 import clientPromise from '../mongodb';
 import { Company, Job } from '../types';
 
@@ -82,6 +81,8 @@ export const mongoDataService = {
       const client = await clientPromise;
       const db = client.db(DB_NAME);
       const collection = db.collection<Company>('companies');
+
+      // company.status = "Draft";
 
       const result = await collection.insertOne({
         ...company,
