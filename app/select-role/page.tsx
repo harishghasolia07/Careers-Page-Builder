@@ -32,8 +32,8 @@ export default function SelectRolePage() {
   // Show loading while checking auth
   if (!isLoaded) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-50 to-slate-100">
-        <Loader2 className="h-8 w-8 animate-spin text-blue-600" />
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-950 dark:to-slate-900">
+        <Loader2 className="h-8 w-8 animate-spin text-blue-600 dark:text-blue-400" />
       </div>
     );
   }
@@ -98,11 +98,11 @@ export default function SelectRolePage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-50 to-slate-100 p-4">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-950 dark:to-slate-900 p-4">
       <div className="w-full max-w-5xl">
         <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-slate-900 mb-2">Welcome to Careers Page Builder</h1>
-          <p className="text-lg text-slate-600">Choose your role to get started</p>
+          <h1 className="text-4xl font-bold text-slate-900 dark:text-slate-100 mb-2">Welcome to Careers Page Builder</h1>
+          <p className="text-lg text-slate-600 dark:text-slate-400">Choose your role to get started</p>
         </div>
 
         <div className="grid md:grid-cols-3 gap-6 mb-8">
@@ -122,7 +122,7 @@ export default function SelectRolePage() {
                 <Card
                   className={`cursor-pointer transition-all hover:shadow-lg h-full ${
                     isSelected
-                      ? 'ring-2 ring-blue-500 shadow-lg bg-blue-50'
+                      ? 'ring-2 ring-blue-500 shadow-lg bg-blue-50 dark:bg-blue-950'
                       : 'hover:border-slate-300'
                   }`}
                 >
@@ -131,8 +131,8 @@ export default function SelectRolePage() {
                       <div
                         className={`p-2 rounded-lg ${
                           isSelected
-                            ? 'bg-blue-100 text-blue-600'
-                            : 'bg-slate-100 text-slate-600'
+                            ? 'bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-400'
+                            : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400'
                         }`}
                       >
                         <Icon className="w-6 h-6" />
@@ -146,8 +146,8 @@ export default function SelectRolePage() {
                   <CardContent>
                     <ul className="space-y-2">
                       {role.features.map((feature, index) => (
-                        <li key={index} className="flex items-center gap-2 text-sm text-slate-600">
-                          <div className="w-1.5 h-1.5 rounded-full bg-slate-400" />
+                        <li key={index} className="flex items-center gap-2 text-sm text-slate-600 dark:text-slate-400">
+                          <div className="w-1.5 h-1.5 rounded-full bg-slate-400 dark:bg-slate-500" />
                           {feature}
                         </li>
                       ))}
@@ -180,16 +180,16 @@ export default function SelectRolePage() {
 
         {selectedRole && (
           <div className="text-center mt-4">
-            <p className="text-sm text-green-600 font-medium">
+            <p className="text-sm text-green-600 dark:text-green-400 font-medium">
               ✓ {roles.find(r => r.value === selectedRole)?.title} role selected
             </p>
           </div>
         )}
 
         <div className="text-center mt-6">
-          <p className="text-sm text-slate-600">
+          <p className="text-sm text-slate-600 dark:text-slate-400">
             Already have an account?{' '}
-            <Link href="/sign-in" className="text-blue-600 hover:underline font-medium">
+            <Link href="/sign-in" className="text-blue-600 dark:text-blue-400 hover:underline font-medium">
               Sign in
             </Link>
           </p>

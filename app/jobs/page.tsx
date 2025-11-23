@@ -104,29 +104,31 @@ export default function JobsPage() {
                           selectedJobType !== 'all' || selectedDepartment !== 'all';
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-50">
-      <header className="border-b bg-white/80 backdrop-blur-sm sticky top-0 z-10">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950">
+      <header className="border-b bg-white/80 dark:bg-slate-900/80 backdrop-blur-sm sticky top-0 z-10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
           <Link href="/">
             <div className="flex items-center gap-3 cursor-pointer">
-              <Building2 className="h-8 w-8 text-blue-600" />
-              <span className="text-xl font-bold text-slate-900">Careers Page Builder</span>
+              <Building2 className="h-8 w-8 text-blue-600 dark:text-blue-400" />
+              <span className="text-xl font-bold text-slate-900 dark:text-slate-100">Careers Page Builder</span>
             </div>
           </Link>
-          {isLoaded && user && <UserButton afterSignOutUrl="/" />}
+          <div className="flex items-center gap-3">
+            {isLoaded && user && <UserButton afterSignOutUrl="/" />}
+          </div>
         </div>
       </header>
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="mb-8">
-          <h1 className="text-4xl font-bold text-slate-900 mb-4">Browse All Jobs</h1>
-          <p className="text-lg text-slate-600 mb-6">
+          <h1 className="text-4xl font-bold text-slate-900 dark:text-slate-100 mb-4">Browse All Jobs</h1>
+          <p className="text-lg text-slate-600 dark:text-slate-400 mb-6">
             Explore opportunities from companies using our platform
           </p>
 
           {/* Search Bar */}
           <div className="relative max-w-2xl mb-6">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-slate-400" />
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-slate-400 dark:text-slate-500" />
             <Input
               type="text"
               placeholder="Search jobs by title, company, department, or location..."
@@ -137,10 +139,10 @@ export default function JobsPage() {
           </div>
 
           {/* Filters */}
-          <div className="bg-white rounded-lg border p-4 shadow-sm">
+          <div className="bg-white dark:bg-slate-800 rounded-lg border p-4 shadow-sm">
             <div className="flex items-center gap-2 mb-3">
-              <Filter className="h-5 w-5 text-slate-600" />
-              <h3 className="font-semibold text-slate-900">Filters</h3>
+              <Filter className="h-5 w-5 text-slate-600 dark:text-slate-400" />
+              <h3 className="font-semibold text-slate-900 dark:text-slate-100">Filters</h3>
               {hasActiveFilters && (
                 <Button 
                   variant="ghost" 
@@ -154,7 +156,7 @@ export default function JobsPage() {
             </div>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div>
-                <label className="text-sm font-medium text-slate-700 mb-2 block">
+                <label className="text-sm font-medium text-slate-700 dark:text-slate-300 mb-2 block">
                   Location
                 </label>
                 <Select value={selectedLocation} onValueChange={setSelectedLocation}>
